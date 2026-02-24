@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 534714856018892347}
   - component: {fileID: 1178577853137576531}
   - component: {fileID: 9141075354286853876}
-  - component: {fileID: -5802389528271521774}
   m_Layer: 0
   m_Name: Paddle
   m_TagString: Untagged
@@ -119,15 +118,3 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!114 &-5802389528271521774
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2753380319381494233}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f78b153a70968b942bfc78f8eabcb142, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Deathscript
