@@ -1,27 +1,29 @@
+// ReSharper disable RedundantUsingDirective
 using System;
 using TMPro;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Script : MonoBehaviour
 {
-    [SerializeField] Transform PaddleLeft;
-    [SerializeField] Transform PaddleRight;
-    [SerializeField] float PaddleSpeed = 6;
+    [FormerlySerializedAs("PaddleLeft")] [SerializeField] Transform paddleLeft;
+    [FormerlySerializedAs("PaddleRight")] [SerializeField] Transform paddleRight;
+    [FormerlySerializedAs("PaddleSpeed")] [SerializeField] float paddleSpeed = 6;
 
-    [SerializeField] Rigidbody2D BallRb;
-    [SerializeField] float BallSpeedMultiplier = 1000;
+    [FormerlySerializedAs("BallRb")] [SerializeField] Rigidbody2D ballRb;
+    [FormerlySerializedAs("BallSpeedMultiplier")] [SerializeField] float ballSpeed = 1000;
     
-    [SerializeField] TextMeshPro ScoreLeft;
-    [SerializeField] TextMeshPro ScoreRight;
+    [FormerlySerializedAs("ScoreLeft")] [SerializeField] TextMeshProUGUI scoreLeft;
+    [FormerlySerializedAs("ScoreRight")] [SerializeField] TextMeshProUGUI scoreRight;
 
    
-    private int _scoreLeft = 0;
-    private int _scoreRight = 0;
+    private int _scoreLeft;
+    private int _scoreRight;
 
     void Start()
     {
-        PaddleSpeed = PaddleSpeed * 0.01f;
+        paddleSpeed = paddleSpeed * 0.01f;
 
         NewRound();
     }
@@ -29,45 +31,60 @@ public class Script : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.S))
         {
-            Vector3 newPosition = PaddleLeft.position;
-            newPosition.y -= PaddleSpeed;
-            PaddleLeft.position = newPosition;
+            Vector3 newPosition = paddleLeft.position;
+            newPosition.y -= paddleSpeed;
+            paddleLeft.position = newPosition;
         }
 
         if (Input.GetKey(KeyCode.W))
         {
-            Vector3 newPosition = PaddleLeft.position;
-            newPosition.y += PaddleSpeed;
-            PaddleLeft.position = newPosition;
+            Vector3 newPosition = paddleLeft.position;
+            newPosition.y += paddleSpeed;
+            paddleLeft.position = newPosition;
         }
 
         if (Input.GetKey(KeyCode.DownArrow))
         {
-            Vector3 newPosition = PaddleRight.position;
-            newPosition.y -= PaddleSpeed;
-            PaddleRight.position = newPosition;
+            Vector3 newPosition = paddleRight.position;
+            newPosition.y -= paddleSpeed;
+            paddleRight.position = newPosition;
         }
 
         if (Input.GetKey(KeyCode.UpArrow))
         {
-            Vector3 newPosition = PaddleRight.position;
-            newPosition.y += PaddleSpeed;
-            PaddleRight.position = newPosition;
+            Vector3 newPosition = paddleRight.position;
+            newPosition.y += paddleSpeed;
+            paddleRight.position = newPosition;
         }
 
-        if (BallRb.position.x > 8)
+        if (ballRb.position.x > 8)
         {
+            NewRound();
+            _scoreLeft++;
+            DisplayScore();
+        }
+
+        if (ballRb.position.x < -8)
+        {
+            NewRound();
+            _scoreRight++;
+            DisplayScore();
         }
     }
 
+    private void DisplayScore()
+    {
+        scoreLeft.text = _scoreLeft.ToString();
+        scoreRight.text = _scoreRight.ToString();
+    }
+    
+    
     private void NewRound()
     {
-        float xVelocity = (UnityEngine.Random.value * BallSpeedMultiplier * 3) - 1.5f  * BallSpeedMultiplier;
-        float yVelocity = (UnityEngine.Random.value * BallSpeedMultiplier) - 0.5f * BallSpeedMultiplier;
-        Vector2 a = new Vector2(xVelocity, yVelocity);
-        //quaternion.Euler(0f,0f, UnityEngine.Random)
-        BallRb.position = new Vector2(x: 0, y: 0);
-        BallRb.AddForce(new Vector2(x: xVelocity, y: yVelocity));
+        float angle = UnityEngine.Random.Range(math.PI/6, Mathf.PI/3);
+        angle *= UnityEngine.Random.Range(1, 4);
+        ballRb.position = new Vector2(x: 0, y: 0);
+        ballRb.AddForce(new Vector2(x: Mathf.Cos(angle), y: Mathf.Sin(angle)) * ballSpeed);
     }
     
 }
